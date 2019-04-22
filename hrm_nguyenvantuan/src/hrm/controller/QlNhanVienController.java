@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import hrm.entities.nhanvien;
 import hrm.entities.phongban;
+import hrm.entities.tiengnhat;
 import hrm.entities.truongphong;
 import hrm.logic.PhongBanLogic;
 import hrm.logic.QlNhanVienLogic;
@@ -61,12 +62,17 @@ public class QlNhanVienController extends HttpServlet {
 		
 		ArrayList<truongphong> arrtp = new ArrayList<>();
 		arrtp = tpLogic.getArrTP(0, "");
-
+		
+		ArrayList<tiengnhat> arrtn = new ArrayList<>();
+		arrtn = nvLogic.getArrTN();
+		
 		// send request
 		request.setAttribute("arrnv", arrnv);
 		request.setAttribute("page", page);
+		request.setAttribute("listPage", listPage);
 		request.setAttribute("arrpb", arrpb);
 		request.setAttribute("arrtp", arrtp);
+		request.setAttribute("arrtn", arrtn);
 
 		// forward to qltruongphong.jsp
 		request.getRequestDispatcher("jsp/qlnhanvien.jsp").forward(request, response);
@@ -93,6 +99,8 @@ public class QlNhanVienController extends HttpServlet {
 			nv.setMatp(Integer.valueOf(request.getParameter("truongphong")));
 			nv.setTentk(request.getParameter("taikhoanadd"));
 			nv.setMatkhau(request.getParameter("matkhauadd"));
+			nv.setMatn(Integer.valueOf(request.getParameter("matn")));
+			nv.setHesoluong(Integer.valueOf(request.getParameter("hesoluongadd")));
 
 			if (nvLogic.checkAddNV(nv)) {
 				msg = "Thêm thành công";
@@ -110,6 +118,8 @@ public class QlNhanVienController extends HttpServlet {
 			nv.setDiachi(request.getParameter("diachiedit"));
 			nv.setGioitinh(request.getParameter("gioitinhedit"));
 			nv.setSdt(request.getParameter("sdtedit"));
+			nv.setMatn(Integer.valueOf(request.getParameter("trinhdo")));
+			nv.setHesoluong(Integer.valueOf(request.getParameter("hesoluongedit")));
 
 			if (nvLogic.checkEditNV(nv)) {
 				msg = "Sửa thành công";

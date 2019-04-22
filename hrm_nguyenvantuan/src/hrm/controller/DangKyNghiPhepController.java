@@ -10,21 +10,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import hrm.entities.baocao;
-import hrm.logic.BaoCaoLogic;
+import hrm.entities.nghiphep;
+import hrm.logic.NghiPhepLogic;
 
 /**
- * Servlet implementation class BaoCaoController
+ * Servlet implementation class DangKyNghiPhepController
  */
-@WebServlet("/BaoCaoController")
-public class BaoCaoController extends HttpServlet {
+@WebServlet("/DangKyNghiPhepController")
+public class DangKyNghiPhepController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	protected BaoCaoLogic bcLogic = new BaoCaoLogic();
+	protected NghiPhepLogic npLogic = new NghiPhepLogic();
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public BaoCaoController() {
+	public DangKyNghiPhepController() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -49,17 +49,17 @@ public class BaoCaoController extends HttpServlet {
 			search = "";
 		}
 
-		ArrayList<baocao> arrbc = new ArrayList<>();
-		arrbc = bcLogic.getArrBC(page, search, id);
-		listPage = bcLogic.getTotalPage(search, id);
+		ArrayList<nghiphep> arrnp = new ArrayList<>();
+		arrnp = npLogic.getArrNP(page, search, id);
+		listPage = npLogic.getTotalPage(search, id);
 
 		// send request
-		request.setAttribute("arrbc", arrbc);
+		request.setAttribute("arrnp", arrnp);
 		request.setAttribute("listPage", listPage);
 		request.setAttribute("page", page);
 
 		// forward to qltruongphong.jsp
-		request.getRequestDispatcher("jsp/baocaonv.jsp").forward(request, response);
+		request.getRequestDispatcher("jsp/dangkynghiphep.jsp").forward(request, response);
 	}
 
 	/**
@@ -70,16 +70,17 @@ public class BaoCaoController extends HttpServlet {
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
-		baocao bc = new baocao();
+		nghiphep np = new nghiphep();
 		String type = request.getParameter("type"); // type : add, edit
 		String msg = null; // message notice
-		
-		if ("add".equals(type)) {
-			bc.setManv(Integer.parseInt((String) session.getAttribute("id")));
-			bc.setNdbc(request.getParameter("ndbcadd"));
-			bc.setNgaybc(request.getParameter("ngaybcadd"));
 
-			if (bcLogic.checkAddBC(bc)) {
+		if ("add".equals(type)) {
+			np.setManv(Integer.parseInt((String) session.getAttribute("id")));
+			np.setLydo(request.getParameter("lydoadd"));
+			np.setNgaynghi(request.getParameter("ngaynghiadd"));
+			np.setLoainghiphep(request.getParameter("loainghiphep"));
+
+			if (npLogic.checkAddNP(np)) {
 				msg = "Thêm thành công";
 			} else {
 				msg = "Thêm thất bại";
@@ -87,18 +88,19 @@ public class BaoCaoController extends HttpServlet {
 		}
 
 		if ("edit".equals(type)) {
-			bc.setId(Integer.valueOf(request.getParameter("mabc")));
-			bc.setManv(Integer.parseInt((String) session.getAttribute("id")));
-			bc.setNdbc(request.getParameter("ndbcedit"));
-			bc.setNgaybc(request.getParameter("ngaybcedit"));
+			np.setId(Integer.valueOf(request.getParameter("manp")));
+			np.setManv(Integer.parseInt((String) session.getAttribute("id")));
+			np.setLydo(request.getParameter("lydoedit"));
+			np.setNgaynghi(request.getParameter("ngaynghiedit"));
+			np.setLoainghiphep(request.getParameter("loainghiphep"));
 
-			if (bcLogic.checkEditBC(bc)) {
+			if (npLogic.checkEditNP(np)) {
 				msg = "Sửa thành công";
 			} else {
 				msg = "Sửa thất bại";
 			}
 		}
-		
+
 		// send request
 		request.setAttribute("msg", msg);
 		doGet(request, response);
