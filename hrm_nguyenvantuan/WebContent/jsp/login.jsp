@@ -32,7 +32,7 @@
 			</form>
 			
 			<!-- Error -->
-			<p style="color: red">${error }</p>
+			<p style="color: red">${msg.get(0) }</p>
 			
 			<!-- Remind Passowrd -->
 			<div id="formFooter">

@@ -215,6 +215,24 @@
 																	</div>
 																	<div class="form-group">
 
+																		<input class="form-control " type="number"
+																			placeholder="Hệ Số Lương" name="hesoluongadd"
+																			step="1000" required>
+																	</div>
+
+																	<div class="form-group">
+
+																		<select required class="form-control" name="trinhdo">
+																			<option value="">Vui lòng lựa chọn trình độ
+																				tiếng Nhật</option>
+																			<c:forEach items="${arrtn }" var="arrtn">
+																				<option value="${arrtn.matn }">${arrtn.trinhdo }</option>
+																			</c:forEach>
+																		</select>
+																	</div>
+
+																	<div class="form-group">
+
 																		<select required class="form-control" name="phongban">
 																			<option value="">Vui lòng lựa chọn phòng ban</option>
 																			<c:forEach items="${arrpb }" var="arrpb">
@@ -246,6 +264,10 @@
 																	</div>
 																	<div class="form-group">
 																		<input type="hidden" name="type" value="add">
+
+																	</div>
+																	<div class="form-group">
+																		<input type="hidden" name="matn" value=${arrnv.matn }>
 
 																	</div>
 																</div>
@@ -306,6 +328,27 @@
 																		<input class="form-control " type="text"
 																			placeholder="Số Điện Thoại" value="${arrnv.sdt }"
 																			name="sdtedit" required>
+																	</div>
+																	<div class="form-group">
+
+																		<input class="form-control " type="number"
+																			placeholder="Hệ Số Lương" name="hesoluongedit"
+																			value="${arrnv.hesoluong }" step="1000" required>
+																	</div>
+
+																	<div class="form-group">
+
+																		<select required class="form-control" name="trinhdo">
+																			<option value="">Vui lòng lựa chọn trình độ
+																				tiếng Nhật</option>
+																			<c:forEach items="${arrtn }" var="arrtn">
+																				<option value="${arrtn.matn }"
+																					<c:if test="${arrtn.matn eq arrnv.matn }" >
+																						selected="<c:out value="selected"></c:out>"
+																					</c:if>>${arrtn.trinhdo }
+																				</option>
+																			</c:forEach>
+																		</select>
 																	</div>
 																	<div class="form-group">
 
@@ -412,7 +455,7 @@
 												class="glyphicon glyphicon-chevron-left"></span></a></li>
 										<c:forEach items="${listPage }" var="listPage">
 											<li <c:if test="${page eq listPage  }">class="active"</c:if>><a
-												href="phongban?page=${listPage }">${listPage }</a></li>
+												href="qlnhanvien?page=${listPage }">${listPage }</a></li>
 										</c:forEach>
 										<li><a href="#"><span
 												class="glyphicon glyphicon-chevron-right"></span></a></li>

@@ -360,7 +360,7 @@
 												class="glyphicon glyphicon-chevron-left"></span></a></li>
 										<c:forEach items="${listPage }" var="listPage">
 											<li <c:if test="${page eq listPage  }">class="active"</c:if>><a
-												href="phongban?page=${listPage }">${listPage }</a></li>
+												href="qlungvien?page=${listPage }">${listPage }</a></li>
 										</c:forEach>
 										<li><a href="#"><span
 												class="glyphicon glyphicon-chevron-right"></span></a></li>

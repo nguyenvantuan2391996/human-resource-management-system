@@ -61,11 +61,11 @@
 							<!-- Main Menu -->
 							<div class="side-menu-container">
 								<ul class="nav navbar-nav">
-									<li class="active"><a href="dashboard_nhanvien.html"><span class="glyphicon glyphicon-dashboard"></span> Dashboard </a></li>
-									<li><a href="baocaonv.html"><span class="glyphicon glyphicon-list-alt"></span> Báo cáo </a></li>
-									<li><a href="dangkyot.html"><span class="glyphicon glyphicon-time"></span> Đăng ký OT </a></li>
-									<li><a href="dangkynghiphep.html"><span class="glyphicon glyphicon-signal"></span> Đăng ký nghỉ phép </a></li>
-									<li><a href="xemphieuluong.html"><span class="glyphicon glyphicon-usd"></span> Xem phiếu lương </a></li>
+									<li class="active"><a href="dashboard_nhanvien"><span class="glyphicon glyphicon-dashboard"></span> Dashboard </a></li>
+									<li><a href="baocaonv"><span class="glyphicon glyphicon-list-alt"></span> Báo cáo </a></li>
+									<li><a href="dangkyot"><span class="glyphicon glyphicon-time"></span> Đăng ký OT </a></li>
+									<li><a href="dangkynghiphep"><span class="glyphicon glyphicon-signal"></span> Đăng ký nghỉ phép </a></li>
+									<li><a href="xemphieuluong"><span class="glyphicon glyphicon-usd"></span> Xem phiếu lương </a></li>
 								</ul>
 							</div><!-- /.navbar-collapse -->
 						</nav>
