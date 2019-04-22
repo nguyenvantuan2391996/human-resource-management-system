@@ -3,29 +3,49 @@ package hrm.entities;
 import java.util.Date;
 
 public class baocao {
-	private String manv;
+	private int id;
+	private int manv;
+	private String hoten;
 	private String ndbc;
-	private Date ngaybc;
+	private String ngaybc;
 	private String duan;
 
 	public baocao() {
 		super();
 	}
 
-	public baocao(String manv, String ndbc, Date ngaybc, String duan) {
+	public baocao(int id, int manv, String hoten, String ndbc, String ngaybc, String duan) {
 		super();
+		this.id = id;
 		this.manv = manv;
+		this.hoten = hoten;
 		this.ndbc = ndbc;
 		this.ngaybc = ngaybc;
 		this.duan = duan;
 	}
 
-	public String getManv() {
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public int getManv() {
 		return manv;
 	}
 
-	public void setManv(String manv) {
+	public void setManv(int manv) {
 		this.manv = manv;
+	}
+
+	public String getHoten() {
+		return hoten;
+	}
+
+	public void setHoten(String hoten) {
+		this.hoten = hoten;
 	}
 
 	public String getNdbc() {
@@ -36,11 +56,11 @@ public class baocao {
 		this.ndbc = ndbc;
 	}
 
-	public Date getNgaybc() {
+	public String getNgaybc() {
 		return ngaybc;
 	}
 
-	public void setNgaybc(Date ngaybc) {
+	public void setNgaybc(String ngaybc) {
 		this.ngaybc = ngaybc;
 	}
 
@@ -51,5 +71,4 @@ public class baocao {
 	public void setDuan(String duan) {
 		this.duan = duan;
 	}
-
 }

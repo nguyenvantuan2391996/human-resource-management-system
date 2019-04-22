@@ -2,9 +2,11 @@ package hrm.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import hrm.entities.nhanvien;
+import hrm.entities.tiengnhat;
 import hrm.entities.truongphong;
 
 public class QlNhanVienDao extends connectDB {
@@ -15,9 +17,11 @@ public class QlNhanVienDao extends connectDB {
 		ArrayList<nhanvien> arrnv = new ArrayList<>();
 
 		StringBuilder sql = new StringBuilder();
-		sql.append("select * from nhanvien, truongphong, phongban ");
+		sql.append("select * from nhanvien, truongphong, phongban, luong, tiengnhat ");
 		sql.append("where nhanvien.matp = truongphong.matp ");
 		sql.append("and nhanvien.mapb = phongban.mapb ");
+		sql.append("and nhanvien.manv = luong.manv ");
+		sql.append("and luong.matn = tiengnhat.matn ");
 
 		if (!"".equals(search)) {
 			sql.append("and hoten like ? ");
@@ -45,6 +49,7 @@ public class QlNhanVienDao extends connectDB {
 					nv.setManv(Integer.valueOf(rs.getString("manv")));
 					nv.setMatp(Integer.valueOf(rs.getString("matp")));
 					nv.setMapb(Integer.valueOf(rs.getString("mapb")));
+					nv.setMatn(Integer.valueOf(rs.getString("matn")));
 					nv.setHoten(rs.getString("nhanvien.hoten"));
 					nv.setTentp(rs.getString("truongphong.hoten"));
 					nv.setNamsinh(rs.getShort("namsinh"));
@@ -52,6 +57,8 @@ public class QlNhanVienDao extends connectDB {
 					nv.setGioitinh(rs.getString("gioitinh"));
 					nv.setSdt(rs.getString("sdt"));
 					nv.setTenpb(rs.getString("tenphong"));
+					nv.setTrinhdo(rs.getString("trinhdo"));
+					nv.setHesoluong(Integer.valueOf(rs.getString("hesoluong")));
 
 					arrnv.add(nv);
 				}
@@ -62,6 +69,36 @@ public class QlNhanVienDao extends connectDB {
 			}
 		}
 		return arrnv;
+	}
+	
+	public ArrayList<tiengnhat> getArrTN() {
+		ArrayList<tiengnhat> arrtn = new ArrayList<>();
+
+		StringBuilder sql = new StringBuilder();
+		sql.append("select * from tiengnhat");
+
+		conn = getConnectDB();
+
+		if (conn != null) {
+			try {
+				stmt = conn.prepareStatement(sql.toString());
+				rs = stmt.executeQuery();
+
+				while (rs.next()) {
+					tiengnhat tn = new tiengnhat();
+					tn.setMatn(Integer.valueOf(rs.getString("matn")));
+					tn.setTrinhdo(rs.getString("trinhdo"));
+					tn.setTientrocap(Float.valueOf(rs.getString("tientrocap")));
+
+					arrtn.add(tn);
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+			} finally {
+				closeConnection();
+			}
+		}
+		return arrtn;
 	}
 
 	public int getTotalPage(String search) {
@@ -95,28 +132,40 @@ public class QlNhanVienDao extends connectDB {
 	}
 
 	public boolean addNV(nhanvien nv) {
-		String sql = "insert into nhanvien(manv, matp, mapb, hoten, namsinh, diachi, gioitinh, sdt, tentk, matkhau) values(?,?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into nhanvien(matp, mapb, hoten, namsinh, diachi, gioitinh, sdt, tentk, matkhau) values(?,?,?,?,?,?,?,?,?)";
+		String sqlluong = "insert into luong(manv, matn, hesoluong) values(?,?,?)";
 		conn = getConnectDB();
 
 		if (conn != null) {
 			try {
-				stmt = conn.prepareStatement(sql);
+				stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-				stmt.setInt(1, nv.getManv());
-				stmt.setInt(2, nv.getMatp());
-				stmt.setInt(3, nv.getMapb());
-				stmt.setString(4, nv.getHoten());
-				stmt.setInt(5, nv.getNamsinh());
-				stmt.setString(6, nv.getDiachi());
-				stmt.setString(7, nv.getGioitinh());
-				stmt.setString(8, nv.getSdt());
-				stmt.setString(9, nv.getTentk());
-				stmt.setString(10, nv.getMatkhau());
+				stmt.setInt(1, nv.getMatp());
+				stmt.setInt(2, nv.getMapb());
+				stmt.setString(3, nv.getHoten());
+				stmt.setInt(4, nv.getNamsinh());
+				stmt.setString(5, nv.getDiachi());
+				stmt.setString(6, nv.getGioitinh());
+				stmt.setString(7, nv.getSdt());
+				stmt.setString(8, nv.getTentk());
+				stmt.setString(9, nv.getMatkhau());
+
+				stmt.executeUpdate();
+				
+				rs = stmt.getGeneratedKeys();
+				rs.next();
+				int manv = rs.getInt(1); // lấy manv tự tăng
+				stmt = conn.prepareStatement(sqlluong);
+
+				stmt.setInt(1, manv);
+				stmt.setInt(2, nv.getMatn());
+				stmt.setInt(3, nv.getHesoluong());
 
 				stmt.executeUpdate();
 
 				return true;
 			} catch (Exception e) {
+				rollback();
 				return false;
 			} finally {
 				closeConnection();
@@ -128,10 +177,13 @@ public class QlNhanVienDao extends connectDB {
 
 	public boolean editNV(nhanvien nv) {
 		String sql = "update nhanvien set matp = ?, mapb = ?, hoten = ?, namsinh = ?, diachi = ?, gioitinh = ?, sdt = ? where manv = ?";
+		String sqlluong = "update luong set matn = ?, hesoluong = ? where manv = ?";
 		conn = getConnectDB();
 
 		if (conn != null) {
 			try {
+				conn.setAutoCommit(false);
+
 				stmt = conn.prepareStatement(sql);
 
 				stmt.setInt(1, nv.getMatp());
@@ -142,11 +194,23 @@ public class QlNhanVienDao extends connectDB {
 				stmt.setString(6, nv.getGioitinh());
 				stmt.setString(7, nv.getSdt());
 				stmt.setInt(8, nv.getManv());
+				
+				stmt.executeUpdate();
+
+				stmt = conn.prepareStatement(sqlluong);
+				
+				stmt.setInt(1, nv.getMatn());
+				stmt.setInt(2, nv.getHesoluong());
+				stmt.setInt(3, nv.getManv());
 
 				stmt.executeUpdate();
+				
+				conn.commit();
 
 				return true;
 			} catch (Exception e) {
+				System.out.println(e);
+				rollback();
 				return false;
 			} finally {
 				closeConnection();
@@ -183,7 +247,7 @@ public class QlNhanVienDao extends connectDB {
 				stmt.setInt(1, nv.getManv());
 
 				stmt.executeUpdate();
-				
+
 				stmt = conn.prepareStatement(sqlcc);
 				stmt.setInt(1, nv.getManv());
 
@@ -212,5 +276,4 @@ public class QlNhanVienDao extends connectDB {
 
 		return false;
 	}
-
 }

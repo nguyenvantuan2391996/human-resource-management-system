@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import hrm.dao.QlNhanVienDao;
 import hrm.entities.nhanvien;
+import hrm.entities.tiengnhat;
 import hrm.entities.truongphong;
 
 public class QlNhanVienLogic {
@@ -13,6 +14,12 @@ public class QlNhanVienLogic {
 		ArrayList<nhanvien> arrnv = new ArrayList<>();
 		arrnv = nvDao.getArrNV(page, search);
 		return arrnv;
+	}
+	
+	public ArrayList<tiengnhat> getArrTN() {
+		ArrayList<tiengnhat> arrtn = new ArrayList<>();
+		arrtn = nvDao.getArrTN();
+		return arrtn;
 	}
 	
 	public ArrayList<Integer> getTotalPage(String search) {
