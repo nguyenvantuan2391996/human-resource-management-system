@@ -26,7 +26,7 @@
 					class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="dashboard_nhanvien.html"> Employee
+			<a class="navbar-brand" href="dashboard_nhanvien"> Employee
 			</a>
 		</div>
 
@@ -51,7 +51,7 @@
 						<li class=""><a href="#"><i
 								class="glyphicon glyphicon-plane"></i> Activity Log</a></li>
 						<li class="divider"></li>
-						<li><a href="login.html"><i
+						<li><a href="logout"><i
 								class="glyphicon glyphicon-log-out"></i> Logout</a></li>
 					</ul></li>
 			</ul>

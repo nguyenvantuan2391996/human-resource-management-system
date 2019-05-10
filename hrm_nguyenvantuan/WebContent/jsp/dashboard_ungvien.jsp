@@ -49,7 +49,7 @@
 								<li class=""><a href="#"><i class="glyphicon glyphicon-comment"></i> Message </a></li>
 								<li class=""><a href="#"><i class="glyphicon glyphicon-plane"></i> Activity Log</a> </li>
 								<li class="divider"></li>
-								<li><a href="login.html"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
+								<li><a href="logout"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
 							</ul>
 						</li>
 					</ul>
@@ -67,7 +67,7 @@
 							<div class="side-menu-container">
 								<ul class="nav navbar-nav">
 									<li class="active"><a href="#"><span class="glyphicon glyphicon-dashboard"></span> Dashbroad </a></li>
-									<li><a href="thitest.html"><span class="glyphicon glyphicon-home"></span> Thi test </a></li>
+									<li><a href="thitest"><span class="glyphicon glyphicon-home"></span> Thi test </a></li>
 								</ul>
 							</div><!-- /.navbar-collapse -->
 						</nav>

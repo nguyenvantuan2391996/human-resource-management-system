@@ -44,7 +44,7 @@
 								<li class=""><a href="#"><i class="glyphicon glyphicon-comment"></i> Message </a></li>
 								<li class=""><a href="#"><i class="glyphicon glyphicon-plane"></i> Activity Log</a> </li>
 								<li class="divider"></li>
-								<li><a href="login.html"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
+								<li><a href="logout"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
 							</ul>
 						</li>
 					</ul>
@@ -61,11 +61,11 @@
 							<!-- Main Menu -->
 							<div class="side-menu-container">
 								<ul class="nav navbar-nav">
-									<li class="active"><a href="dashboard_truongphong.html"><span class="glyphicon glyphicon-dashboard"></span> Dashbroad </a></li>
-									<li><a href="ot.html"><span class="glyphicon glyphicon-time"></span> Quản lý OT </a></li>
-									<li><a href="nhanvien.html"><span class="glyphicon glyphicon-user"></span> Quản lý nhân viên </a></li>
-								 		<li><a href="nghiphep.html"><span class="glyphicon glyphicon-signal"></span> Quản lý nghỉ phép </a></li>
-									<li><a href="baocao.html"><span class="glyphicon glyphicon-list-alt"></span> Quản lý báo cáo </a></li>
+									<li class="active"><a href="dashboard_truongphong"><span class="glyphicon glyphicon-dashboard"></span> Dashbroad </a></li>
+									<li><a href="qlot"><span class="glyphicon glyphicon-time"></span> Quản lý OT </a></li>
+									<li><a href="nhanvien"><span class="glyphicon glyphicon-user"></span> Quản lý nhân viên </a></li>
+								 		<li><a href="qlnghiphep"><span class="glyphicon glyphicon-signal"></span> Quản lý nghỉ phép </a></li>
+									<li><a href="qlbaocao"><span class="glyphicon glyphicon-list-alt"></span> Quản lý báo cáo </a></li>
 
 									<!-- Dropdown-->
 									<li class="panel panel-default" id="dropdown">
@@ -77,8 +77,8 @@
 										<div id="dropdown-lvl1" class="panel-collapse collapse">
 											<div class="panel-body">
 												<ul class="nav navbar-nav">
-													<li><a href="danhgiaungvien.html">Đánh giá ứng viên</a></li>
-													<li><a href="xemtuvan.html">Xem tư vấn</a></li>
+													<li><a href="danhgiaungvien">Đánh giá ứng viên</a></li>
+													<li><a href="nhaptrongso">Xem tư vấn</a></li>
 												</ul>
 											</div>
 										</div>

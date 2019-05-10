@@ -26,8 +26,7 @@
 					class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="dashboard_truongphong.html">
-				Manager </a>
+			<a class="navbar-brand" href="dashboard_truongphong"> Manager </a>
 		</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
@@ -77,7 +76,7 @@
 									class="glyphicon glyphicon-user"></span> Quản lý nhân viên </a></li>
 							<li><a href="qlnghiphep"><span
 									class="glyphicon glyphicon-signal"></span> Quản lý nghỉ phép </a></li>
-							<li class="active"><a href="qlbaocao"><span
+							<li><a href="qlbaocao"><span
 									class="glyphicon glyphicon-list-alt"></span> Quản lý báo cáo </a></li>
 
 							<!-- Dropdown-->
@@ -86,11 +85,11 @@
 									class="glyphicon glyphicon-calendar"></span> Tư vấn tuyển dụng
 									<span class="caret"></span>
 							</a> <!-- Dropdown level 1 -->
-								<div id="dropdown-lvl1" class="panel-collapse collapse">
+								<div id="dropdown-lvl1">
 									<div class="panel-body">
 										<ul class="nav navbar-nav">
 											<li><a href="danhgiaungvien">Đánh giá ứng viên</a></li>
-											<li><a href="nhaptrongso">Xem tư vấn</a></li>
+											<li class="active"><a href="nhaptrongso">Xem tư vấn</a></li>
 										</ul>
 									</div>
 								</div></li>
@@ -103,21 +102,12 @@
 		</div>
 		<div class="col-md-10 content">
 			<div class="panel panel-default">
-				<div class="panel-heading">Quản lý báo cáo</div>
-				<p style="color: red">${msg }</p>
+				<div class="panel-heading">Vui lòng nhập trọng số cho từng
+					tiêu chí</div>
+				<br> <b><p style="color: red" align="center">${msg }</p></b> <br>
+				<br>
 				<div class="panel-body">
 					<div class="container">
-
-						<!--Search-->
-						<form class="navbar-form navbar-right" method="GET" role="search">
-							<div class="form-group">
-								<input type="text" name="q" class="form-control"
-									placeholder="Search">
-							</div>
-							<button type="submit" class="btn btn-default">
-								<i class="glyphicon glyphicon-search"></i>
-							</button>
-						</form>
 
 						<!--Table Content-->
 						<div class="row">
@@ -127,41 +117,48 @@
 
 									<table id="mytable" class="table table-bordred table-striped">
 
-										<thead>
-											<th>ID</th>
-											<th>Họ & Tên</th>
-											<th>Dự Án</th>
-											<th>Nội dung báo cáo</th>
-											<th>Ngày</th>
-										</thead>
-										<tbody>
-											<c:forEach items="${arrbc }" var="arrbc">
-												<tr>
-													<td>${arrbc.id }</td>
-													<td>${arrbc.hoten }</td>
-													<td>${arrbc.duan }</td>
-													<td>${arrbc.ndbc }</td>
-													<td>${arrbc.ngaybc }</td>
-												</tr>
+										<!--Form lấy trọng số-->
+										<form method="post" action="trongso">
+											<thead>
+												<th></th>
+												<th>Hòa Đồng</th>
+												<th>Trung Thực</th>
+												<th>Quản Trị</th>
+												<th>Phân Tích</th>
+												<th>Ngoại Ngữ</th>
+												<th>Tin Học</th>
+												<th>CNTT</th>
+												<th>Xử Lý TT</th>
+												<th>Giao Tiếp</th>
+											</thead>
 
-											</c:forEach>
-										</tbody>
-
+											<tr>
+												<td>Trọng Số</td>
+												<td><input class="form-control " type="number"
+													min="0.01" max="1" step="0.01" name="hoadong" required></td>
+												<td><input class="form-control " type="number"
+													min="0.01" max="1" step="0.01" name="trungthuc" required></td>
+												<td><input class="form-control " type="number"
+													min="0.01" max="1" step="0.01" name="quantri" required></td>
+												<td><input class="form-control " type="number"
+													min="0.01" max="1" step="0.01" name="phantich" required></td>
+												<td><input class="form-control " type="number"
+													min="0.01" max="1" step="0.01" name="ngoaingu" required></td>
+												<td><input class="form-control " type="number"
+													min="0.01" max="1" step="0.01" name="tinhoc" required></td>
+												<td><input class="form-control " type="number"
+													min="0.01" max="1" step="0.01" name="cntt" required></td>
+												<td><input class="form-control " type="number"
+													min="0.01" max="1" step="0.01" name="xuly" required></td>
+												<td><input class="form-control " type="number"
+													min="0.01" max="1" step="0.01" name="giaotiep" required></td>
+											</tr>
 									</table>
-
-									<!-- List page -->
-									<div class="clearfix"></div>
 									<ul class="pagination pull-right">
-										<li class="disabled"><a href="#"><span
-												class="glyphicon glyphicon-chevron-left"></span></a></li>
-										<c:forEach items="${listPage }" var="listPage">
-											<li <c:if test="${page eq listPage  }">class="active"</c:if>><a
-												href="baocaonv?page=${listPage }">${listPage }</a></li>
-										</c:forEach>
-										<li><a href="#"><span
-												class="glyphicon glyphicon-chevron-right"></span></a></li>
+										<li><input type="submit" value="Xác nhận" name="xacnhan"
+											class="btn btn-primary"></li>
 									</ul>
-
+									</form>
 								</div>
 
 							</div>

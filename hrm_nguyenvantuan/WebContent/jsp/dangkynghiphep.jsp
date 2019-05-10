@@ -51,7 +51,7 @@
 						<li class=""><a href="#"><i
 								class="glyphicon glyphicon-plane"></i> Activity Log</a></li>
 						<li class="divider"></li>
-						<li><a href="login.html"><i
+						<li><a href="logout"><i
 								class="glyphicon glyphicon-log-out"></i> Logout</a></li>
 					</ul></li>
 			</ul>
