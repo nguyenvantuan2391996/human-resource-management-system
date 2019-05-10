@@ -23,7 +23,6 @@ import hrm.logic.TienLuongLogic;
 public class TienLuongController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	protected TienLuongLogic tlLogic = new TienLuongLogic();
-	protected QlNhanVienLogic nvLogic = new QlNhanVienLogic();
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -40,8 +39,12 @@ public class TienLuongController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		HttpSession session = request.getSession();
 		int page = 1;
 		int id = 0;
+		if (session.getAttribute("manv") != null) {
+			id = Integer.parseInt((String) session.getAttribute("manv"));
+		}
 		ArrayList<Integer> listPage = new ArrayList<>();
 		String search = request.getParameter("search");
 
@@ -75,9 +78,14 @@ public class TienLuongController extends HttpServlet {
 		request.setAttribute("arrtl", arrtl);
 		request.setAttribute("listPage", listPage);
 		request.setAttribute("page", page);
-
-		// forward to qltruongphong.jsp
-		request.getRequestDispatcher("jsp/tienluong.jsp").forward(request, response);
+		
+		if (id == 0) {
+			// forward to tienluong.jsp
+			request.getRequestDispatcher("jsp/tienluong.jsp").forward(request, response);
+		} else {
+			// forward to xemphieuluong.jsp
+			request.getRequestDispatcher("jsp/xemphieuluong.jsp").forward(request, response);
+		}
 	}
 
 	/**
@@ -89,7 +97,8 @@ public class TienLuongController extends HttpServlet {
 		// TODO Auto-generated method stub
 		String type = request.getParameter("type"); // type : add, edit
 		String msg = null; // message notice
-
+		int id = 0; // manv
+		
 		if ("tinhluong".equals(type)) {
 
 			if (tlLogic.checkTL()) {
@@ -104,6 +113,15 @@ public class TienLuongController extends HttpServlet {
 				msg = "Export file hoàn thành";
 			} else {
 				msg = "Thất bại ! Xin vui lòng thử lại";
+			}
+		}
+		
+		if("xacnhanphieuluong".equals(type)) {
+			id = Integer.valueOf(request.getParameter("id"));
+			if (tlLogic.checkConfirm(id)) {
+				msg = "Xác nhận phiếu lương thành công";
+			} else {
+				msg = "Xác nhận phiếu lương thất bại ! Xin vui lòng thử lại";
 			}
 		}
 

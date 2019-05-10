@@ -3,16 +3,16 @@ package hrm.entities;
 public class danhgia {
 	private int mauv;
 	private int matp;
-	private int hoadong;
-	private int trungthuc;
-	private int xulytt;
-	private int giaotiep;
+	private float hoadong;
+	private float trungthuc;
+	private float xulytt;
+	private float giaotiep;
 
 	public danhgia() {
 		super();
 	}
 
-	public danhgia(int mauv, int matp, int hoadong, int trungthuc, int xulytt, int giaotiep) {
+	public danhgia(int mauv, int matp, float hoadong, float trungthuc, float xulytt, float giaotiep) {
 		super();
 		this.mauv = mauv;
 		this.matp = matp;
@@ -38,36 +38,35 @@ public class danhgia {
 		this.matp = matp;
 	}
 
-	public int getHoadong() {
+	public float getHoadong() {
 		return hoadong;
 	}
 
-	public void setHoadong(int hoadong) {
+	public void setHoadong(float hoadong) {
 		this.hoadong = hoadong;
 	}
 
-	public int getTrungthuc() {
+	public float getTrungthuc() {
 		return trungthuc;
 	}
 
-	public void setTrungthuc(int trungthuc) {
+	public void setTrungthuc(float trungthuc) {
 		this.trungthuc = trungthuc;
 	}
 
-	public int getXulytt() {
+	public float getXulytt() {
 		return xulytt;
 	}
 
-	public void setXulytt(int xulytt) {
+	public void setXulytt(float xulytt) {
 		this.xulytt = xulytt;
 	}
 
-	public int getGiaotiep() {
+	public float getGiaotiep() {
 		return giaotiep;
 	}
 
-	public void setGiaotiep(int giaotiep) {
+	public void setGiaotiep(float giaotiep) {
 		this.giaotiep = giaotiep;
 	}
-
 }

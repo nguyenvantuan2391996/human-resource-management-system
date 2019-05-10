@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.sound.midi.Soundbank;
 
 import hrm.logic.LoginLogic;
 
@@ -54,14 +55,25 @@ public class LoginController extends HttpServlet {
 		msg = logiclg.validateLogin(username, password);
 
 		if (msg.size() == 2) {
-			session.setAttribute("id", msg.get(0));
 			if("quanly".equals(msg.get(1))) {
+				session.setAttribute("maql", msg.get(0));
 				// sendRedirect tới dashboard admin
 				response.sendRedirect("dashboard_admin");
 			}
 			if("nhanvien".equals(msg.get(1))) {
+				session.setAttribute("manv", msg.get(0));
 				// sendRedirect tới dashboard nhanvien
 				response.sendRedirect("dashboard_nhanvien");
+			}
+			if("truongphong".equals(msg.get(1))) {
+				session.setAttribute("matp", msg.get(0));
+				// sendRedirect tới dashboard nhanvien
+				response.sendRedirect("dashboard_truongphong");
+			}
+			if("ungvien".equals(msg.get(1))) {
+				session.setAttribute("mauv", msg.get(0));
+				// sendRedirect tới dashboard nhanvien
+				response.sendRedirect("dashboard_ungvien");
 			}
 			
 		} else {

@@ -10,13 +10,19 @@ public class OtDao extends connectDB {
 	private PreparedStatement stmt;
 	private ResultSet rs;
 
-	public ArrayList<ot> getArrOT(int page, String search, int id) {
+	public ArrayList<ot> getArrOT(int page, String search, int id, String type) {
 		ArrayList<ot> arrot = new ArrayList<>();
 
 		StringBuilder sql = new StringBuilder();
 		sql.append("select * from ot, nhanvien ");
 		sql.append("where ot.manv = nhanvien.manv ");
-		sql.append("and nhanvien.manv = ? ");
+		if ("nhanvien".equals(type)) {
+			sql.append("and nhanvien.manv = ? ");
+		}
+		if ("truongphong".equals(type)) {
+			sql.append("and matp = ? ");
+			sql.append("and ot.xacnhan = 'None' ");
+		}
 
 		if (!"".equals(search)) {
 			sql.append("and ot.lydo like ? ");
@@ -61,12 +67,18 @@ public class OtDao extends connectDB {
 		return arrot;
 	}
 
-	public int getTotalPage(String search, int id) {
+	public int getTotalPage(String search, int id, String type) {
 		int total = 0;
 		StringBuilder sql = new StringBuilder();
 
-		sql.append("select Count(id) as total from ot ");
-		sql.append("where manv = ? ");
+		sql.append("select Count(id) as total from ot, nhanvien ");
+		sql.append("where ot.manv = nhanvien.manv ");
+		if ("nhanvien".equals(type)) {
+			sql.append("and nhanvien.manv = ? ");
+		}
+		if ("truongphong".equals(type)) {
+			sql.append("and matp = ? ");
+		}
 
 		if (!"".equals(search)) {
 			sql.append("and lydo like ? ");
@@ -94,7 +106,7 @@ public class OtDao extends connectDB {
 		}
 		return total;
 	}
-	
+
 	public boolean addOT(ot ot) {
 		String sql = "insert into ot(manv, sogioot, ngayot, lydo) values(?,?,?,?)";
 		conn = getConnectDB();
@@ -106,7 +118,7 @@ public class OtDao extends connectDB {
 				stmt.setInt(2, ot.getSogioot());
 				stmt.setString(3, ot.getNgayot());
 				stmt.setString(4, ot.getLydo());
-				
+
 				stmt.executeUpdate();
 
 				return true;
@@ -146,5 +158,28 @@ public class OtDao extends connectDB {
 
 		return false;
 	}
-	
+
+	public boolean checkConfirm(String type, int id) {
+		String sql = "update ot set xacnhan = ? where id = ?";
+		conn = getConnectDB();
+
+		if (conn != null) {
+			try {
+				stmt = conn.prepareStatement(sql);
+
+				stmt.setString(1, type);
+				stmt.setInt(2, id);
+
+				stmt.executeUpdate();
+
+				return true;
+			} catch (Exception e) {
+				return false;
+			} finally {
+				closeConnection();
+			}
+		}
+		return false;
+	}
+
 }

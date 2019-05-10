@@ -62,4 +62,15 @@ public class TienLuongLogic {
 		}
 		return msgCheck;
 	}
+	
+	public boolean checkConfirm(int id) {
+		boolean msgCheck;
+
+		if (tlDao.checkConfirm(id)) {
+			msgCheck = true;
+		} else {
+			msgCheck = false;
+		}
+		return msgCheck;
+	}
 }

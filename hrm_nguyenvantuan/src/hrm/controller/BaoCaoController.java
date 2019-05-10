@@ -40,7 +40,17 @@ public class BaoCaoController extends HttpServlet {
 		int page = 1;
 		ArrayList<Integer> listPage = new ArrayList<>();
 		String search = request.getParameter("search");
-		int id = Integer.parseInt((String) session.getAttribute("id"));
+		int id = 0;
+		String type = null;
+
+		if (session.getAttribute("manv") != null) {
+			id = Integer.parseInt((String) session.getAttribute("manv"));
+			type = "nhanvien";
+		}
+		if (session.getAttribute("matp") != null) {
+			id = Integer.parseInt((String) session.getAttribute("matp"));
+			type = "truongphong";
+		}
 
 		if (request.getParameter("page") != null) {
 			page = Integer.valueOf(request.getParameter("page"));
@@ -50,16 +60,23 @@ public class BaoCaoController extends HttpServlet {
 		}
 
 		ArrayList<baocao> arrbc = new ArrayList<>();
-		arrbc = bcLogic.getArrBC(page, search, id);
-		listPage = bcLogic.getTotalPage(search, id);
+		arrbc = bcLogic.getArrBC(page, search, id, type);
+		listPage = bcLogic.getTotalPage(search, id, type);
 
 		// send request
 		request.setAttribute("arrbc", arrbc);
 		request.setAttribute("listPage", listPage);
 		request.setAttribute("page", page);
 
-		// forward to qltruongphong.jsp
-		request.getRequestDispatcher("jsp/baocaonv.jsp").forward(request, response);
+		if ("truongphong".equals(type)) {
+			// forward to baocao.jsp
+			request.getRequestDispatcher("jsp/baocao.jsp").forward(request, response);
+		}
+		if ("nhanvien".equals(type)) {
+			// forward to baocaonv.jsp
+			request.getRequestDispatcher("jsp/baocaonv.jsp").forward(request, response);
+		}
+
 	}
 
 	/**
@@ -73,9 +90,9 @@ public class BaoCaoController extends HttpServlet {
 		baocao bc = new baocao();
 		String type = request.getParameter("type"); // type : add, edit
 		String msg = null; // message notice
-		
+
 		if ("add".equals(type)) {
-			bc.setManv(Integer.parseInt((String) session.getAttribute("id")));
+			bc.setManv(Integer.parseInt((String) session.getAttribute("manv")));
 			bc.setNdbc(request.getParameter("ndbcadd"));
 			bc.setNgaybc(request.getParameter("ngaybcadd"));
 
@@ -88,7 +105,7 @@ public class BaoCaoController extends HttpServlet {
 
 		if ("edit".equals(type)) {
 			bc.setId(Integer.valueOf(request.getParameter("mabc")));
-			bc.setManv(Integer.parseInt((String) session.getAttribute("id")));
+			bc.setManv(Integer.parseInt((String) session.getAttribute("manv")));
 			bc.setNdbc(request.getParameter("ndbcedit"));
 			bc.setNgaybc(request.getParameter("ngaybcedit"));
 
@@ -98,7 +115,7 @@ public class BaoCaoController extends HttpServlet {
 				msg = "Sửa thất bại";
 			}
 		}
-		
+
 		// send request
 		request.setAttribute("msg", msg);
 		doGet(request, response);

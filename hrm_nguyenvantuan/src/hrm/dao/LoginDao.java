@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 
 import hrm.entities.nhanvien;
 import hrm.entities.quanly;
+import hrm.entities.truongphong;
+import hrm.entities.ungvien;
 
 public class LoginDao extends connectDB {
 	private PreparedStatement stmt;
@@ -67,4 +69,63 @@ public class LoginDao extends connectDB {
 		}
 		return nv;
 	}
+	
+	public truongphong getTruongPhong(String username, String password) {
+		truongphong tp = null;
+
+		String sql = "select * from truongphong " + " where tentk = ? and matkhau = ?";
+		conn = getConnectDB();
+
+		if (conn != null) {
+			try {
+				stmt = conn.prepareStatement(sql);
+				stmt.setString(1, username);
+				stmt.setString(2, password);
+				rs = stmt.executeQuery();
+				
+				while (rs.next()) {
+					tp = new truongphong();
+					tp.setMatp(Integer.valueOf(rs.getString("matp")));
+					tp.setTentk(rs.getString("tentk"));
+					tp.setMatkhau(rs.getString("matkhau"));
+					tp.setLoaitk(rs.getString("loaitk"));
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+			} finally {
+				closeConnection();
+			}
+		}
+		return tp;
+	}
+	
+	public ungvien getUngVien(String username, String password) {
+		ungvien uv = null;
+
+		String sql = "select * from ungvien " + " where tentk = ? and matkhau = ?";
+		conn = getConnectDB();
+
+		if (conn != null) {
+			try {
+				stmt = conn.prepareStatement(sql);
+				stmt.setString(1, username);
+				stmt.setString(2, password);
+				rs = stmt.executeQuery();
+				
+				while (rs.next()) {
+					uv = new ungvien();
+					uv.setMauv(rs.getInt("mauv"));
+					uv.setTentk(rs.getString("tentk"));
+					uv.setMatkhau(rs.getString("matkhau"));
+					uv.setLoaitk(rs.getString("loaitk"));
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+			} finally {
+				closeConnection();
+			}
+		}
+		return uv;
+	}
+	
 }

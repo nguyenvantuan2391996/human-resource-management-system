@@ -8,7 +8,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import hrm.entities.duan;
 import hrm.entities.nhanvien;
 import hrm.entities.phongban;
 import hrm.entities.tiengnhat;
@@ -42,9 +44,16 @@ public class QlNhanVienController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		HttpSession session = request.getSession();
 		int page = 1;
 		ArrayList<Integer> listPage = new ArrayList<>();
 		String search = request.getParameter("search");
+
+		int id = 0;
+
+		if (session.getAttribute("matp") != null) {
+			id = Integer.parseInt((String) session.getAttribute("matp"));
+		}
 
 		if (request.getParameter("page") != null) {
 			page = Integer.valueOf(request.getParameter("page"));
@@ -54,18 +63,21 @@ public class QlNhanVienController extends HttpServlet {
 		}
 
 		ArrayList<nhanvien> arrnv = new ArrayList<>();
-		arrnv = nvLogic.getArrNV(page, search);
-		listPage = nvLogic.getTotalPage(search);
+		arrnv = nvLogic.getArrNV(page, search, id);
+		listPage = nvLogic.getTotalPage(search, id);
 
 		ArrayList<phongban> arrpb = new ArrayList<>();
 		arrpb = pbLogic.getArrayPb(0, "");
-		
+
 		ArrayList<truongphong> arrtp = new ArrayList<>();
 		arrtp = tpLogic.getArrTP(0, "");
-		
+
 		ArrayList<tiengnhat> arrtn = new ArrayList<>();
 		arrtn = nvLogic.getArrTN();
 		
+		ArrayList<duan> arrduan = new ArrayList<>();
+		arrduan = nvLogic.getArrDA();
+
 		// send request
 		request.setAttribute("arrnv", arrnv);
 		request.setAttribute("page", page);
@@ -73,9 +85,16 @@ public class QlNhanVienController extends HttpServlet {
 		request.setAttribute("arrpb", arrpb);
 		request.setAttribute("arrtp", arrtp);
 		request.setAttribute("arrtn", arrtn);
+		request.setAttribute("arrduan", arrduan);
 
-		// forward to qltruongphong.jsp
-		request.getRequestDispatcher("jsp/qlnhanvien.jsp").forward(request, response);
+		if (id == 0) {
+			// forward to qlnhanvien.jsp
+			request.getRequestDispatcher("jsp/qlnhanvien.jsp").forward(request, response);
+		} else {
+			// forward to qlnhanvien.jsp
+			request.getRequestDispatcher("jsp/nhanvien.jsp").forward(request, response);
+		}
+
 	}
 
 	/**
@@ -88,7 +107,7 @@ public class QlNhanVienController extends HttpServlet {
 		nhanvien nv = new nhanvien();
 		String type = request.getParameter("type"); // type : add, edit, delete
 		String msg = null; // message notice
-		
+
 		if ("add".equals(type)) {
 			nv.setMapb(Integer.valueOf(request.getParameter("phongban")));
 			nv.setHoten(request.getParameter("hotenadd"));
@@ -108,7 +127,7 @@ public class QlNhanVienController extends HttpServlet {
 				msg = "Thêm thất bại";
 			}
 		}
-		
+
 		if ("edit".equals(type)) {
 			nv.setManv(Integer.valueOf(request.getParameter("id")));
 			nv.setMatp(Integer.valueOf(request.getParameter("truongphong")));
@@ -127,7 +146,7 @@ public class QlNhanVienController extends HttpServlet {
 				msg = "Sửa thất bại";
 			}
 		}
-		
+
 		if ("delete".equals(type)) {
 			nv.setManv(Integer.valueOf(request.getParameter("id")));
 
@@ -138,6 +157,18 @@ public class QlNhanVienController extends HttpServlet {
 			}
 		}
 		
+		if ("tpedit".equals(type)) {
+			nv.setManv(Integer.valueOf(request.getParameter("id")));
+			nv.setMaduan(Integer.valueOf(request.getParameter("duan")));
+			nv.setDanhgia(request.getParameter("danhgia"));
+
+			if (nvLogic.checkTPEditNV(nv)) {
+				msg = "Sửa thành công";
+			} else {
+				msg = "Sửa thất bại";
+			}
+		}
+
 		// send request
 		request.setAttribute("msg", msg);
 		doGet(request, response);

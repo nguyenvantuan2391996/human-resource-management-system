@@ -4,6 +4,7 @@ public class ungvien {
 	private int mauv;
 	private int matp;
 	private String hoten;
+	private String tentp;
 	private int namsinh;
 	private String diachi;
 	private String gioitinh;
@@ -11,27 +12,29 @@ public class ungvien {
 	private String tentk;
 	private String matkhau;
 	private String loaitk;
-	private int hoadong;
-	private int trungthuc;
-	private int quantri;
-	private int phantich;
-	private int ngoaingu;
-	private int tinhoc;
-	private int cntt;
-	private int xulytt;
-	private int giaotiep;
+	private Float hoadong;
+	private Float trungthuc;
+	private Float quantri;
+	private Float phantich;
+	private Float ngoaingu;
+	private Float tinhoc;
+	private Float cntt;
+	private Float xulytt;
+	private Float giaotiep;
+	private Double dotuongtu;
 
 	public ungvien() {
 		super();
 	}
 
-	public ungvien(int mauv, int matp, String hoten, int namsinh, String diachi, String gioitinh, String sdt,
-			String tentk, String matkhau, String loaitk, int hoadong, int trungthuc, int quantri, int phantich,
-			int ngoaingu, int tinhoc, int cntt, int xulytt, int giaotiep) {
+	public ungvien(int mauv, int matp, String hoten, String tentp, int namsinh, String diachi, String gioitinh,
+			String sdt, String tentk, String matkhau, String loaitk, Float hoadong, Float trungthuc, Float quantri,
+			Float phantich, Float ngoaingu, Float tinhoc, Float cntt, Float xulytt, Float giaotiep, Double dotuongtu) {
 		super();
 		this.mauv = mauv;
 		this.matp = matp;
 		this.hoten = hoten;
+		this.tentp = tentp;
 		this.namsinh = namsinh;
 		this.diachi = diachi;
 		this.gioitinh = gioitinh;
@@ -48,6 +51,7 @@ public class ungvien {
 		this.cntt = cntt;
 		this.xulytt = xulytt;
 		this.giaotiep = giaotiep;
+		this.dotuongtu = dotuongtu;
 	}
 
 	public int getMauv() {
@@ -72,6 +76,14 @@ public class ungvien {
 
 	public void setHoten(String hoten) {
 		this.hoten = hoten;
+	}
+
+	public String getTentp() {
+		return tentp;
+	}
+
+	public void setTentp(String tentp) {
+		this.tentp = tentp;
 	}
 
 	public int getNamsinh() {
@@ -130,76 +142,83 @@ public class ungvien {
 		this.loaitk = loaitk;
 	}
 
-	public int getHoadong() {
+	public Float getHoadong() {
 		return hoadong;
 	}
 
-	public void setHoadong(int hoadong) {
+	public void setHoadong(Float hoadong) {
 		this.hoadong = hoadong;
 	}
 
-	public int getTrungthuc() {
+	public Float getTrungthuc() {
 		return trungthuc;
 	}
 
-	public void setTrungthuc(int trungthuc) {
+	public void setTrungthuc(Float trungthuc) {
 		this.trungthuc = trungthuc;
 	}
 
-	public int getQuantri() {
+	public Float getQuantri() {
 		return quantri;
 	}
 
-	public void setQuantri(int quantri) {
+	public void setQuantri(Float quantri) {
 		this.quantri = quantri;
 	}
 
-	public int getPhantich() {
+	public Float getPhantich() {
 		return phantich;
 	}
 
-	public void setPhantich(int phantich) {
+	public void setPhantich(Float phantich) {
 		this.phantich = phantich;
 	}
 
-	public int getNgoaingu() {
+	public Float getNgoaingu() {
 		return ngoaingu;
 	}
 
-	public void setNgoaingu(int ngoaingu) {
+	public void setNgoaingu(Float ngoaingu) {
 		this.ngoaingu = ngoaingu;
 	}
 
-	public int getTinhoc() {
+	public Float getTinhoc() {
 		return tinhoc;
 	}
 
-	public void setTinhoc(int tinhoc) {
+	public void setTinhoc(Float tinhoc) {
 		this.tinhoc = tinhoc;
 	}
 
-	public int getCntt() {
+	public Float getCntt() {
 		return cntt;
 	}
 
-	public void setCntt(int cntt) {
+	public void setCntt(Float cntt) {
 		this.cntt = cntt;
 	}
 
-	public int getXulytt() {
+	public Float getXulytt() {
 		return xulytt;
 	}
 
-	public void setXulytt(int xulytt) {
+	public void setXulytt(Float xulytt) {
 		this.xulytt = xulytt;
 	}
 
-	public int getGiaotiep() {
+	public Float getGiaotiep() {
 		return giaotiep;
 	}
 
-	public void setGiaotiep(int giaotiep) {
+	public void setGiaotiep(Float giaotiep) {
 		this.giaotiep = giaotiep;
 	}
 
+	public Double getDotuongtu() {
+		return dotuongtu;
+	}
+
+	public void setDotuongtu(Double dotuongtu) {
+		this.dotuongtu = dotuongtu;
+	}
 }

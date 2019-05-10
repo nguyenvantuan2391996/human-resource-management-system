@@ -10,13 +10,20 @@ public class NghiPhepDao extends connectDB {
 	private PreparedStatement stmt;
 	private ResultSet rs;
 
-	public ArrayList<nghiphep> getArrNP(int page, String search, int id) {
+	public ArrayList<nghiphep> getArrNP(int page, String search, int id, String type) {
 		ArrayList<nghiphep> arrnp = new ArrayList<>();
 
 		StringBuilder sql = new StringBuilder();
 		sql.append("select * from nghiphep, nhanvien ");
 		sql.append("where nghiphep.manv = nhanvien.manv ");
-		sql.append("and nhanvien.manv = ? ");
+
+		if ("nhanvien".equals(type)) {
+			sql.append("and nhanvien.manv = ? ");
+		}
+		if ("truongphong".equals(type)) {
+			sql.append("and matp = ? ");
+			sql.append("and nghiphep.xacnhan = 'None' ");
+		}
 
 		if (!"".equals(search)) {
 			sql.append("and np.lydo like ? ");
@@ -61,12 +68,18 @@ public class NghiPhepDao extends connectDB {
 		return arrnp;
 	}
 
-	public int getTotalPage(String search, int id) {
+	public int getTotalPage(String search, int id, String type) {
 		int total = 0;
 		StringBuilder sql = new StringBuilder();
 
-		sql.append("select Count(id) as total from nghiphep ");
-		sql.append("where manv = ? ");
+		sql.append("select Count(id) as total from nghiphep, nhanvien ");
+		sql.append("where nghiphep.manv = nhanvien.manv ");
+		if ("nhanvien".equals(type)) {
+			sql.append("and nhanvien.manv = ? ");
+		}
+		if ("truongphong".equals(type)) {
+			sql.append("and matp = ? ");
+		}
 
 		if (!"".equals(search)) {
 			sql.append("and lydo like ? ");
@@ -105,10 +118,10 @@ public class NghiPhepDao extends connectDB {
 				stmt.setInt(1, np.getManv());
 				stmt.setString(2, np.getNgaynghi());
 				stmt.setString(3, np.getLoainghiphep());
-				if("Sáng".equals(np.getLoainghiphep()) || "Chiều".equals(np.getLoainghiphep())) {
+				if ("Sáng".equals(np.getLoainghiphep()) || "Chiều".equals(np.getLoainghiphep())) {
 					stmt.setFloat(4, 0.5f);
 				}
-				if("Cả Ngày".equals(np.getLoainghiphep())) {
+				if ("Cả Ngày".equals(np.getLoainghiphep())) {
 					stmt.setFloat(4, 1f);
 				}
 				stmt.setString(5, np.getLydo());
@@ -137,10 +150,10 @@ public class NghiPhepDao extends connectDB {
 				stmt.setInt(1, np.getManv());
 				stmt.setString(2, np.getNgaynghi());
 				stmt.setString(3, np.getLoainghiphep());
-				if("Sáng".equals(np.getLoainghiphep()) || "Chiều".equals(np.getLoainghiphep())) {
+				if ("Sáng".equals(np.getLoainghiphep()) || "Chiều".equals(np.getLoainghiphep())) {
 					stmt.setFloat(4, 0.5f);
 				}
-				if("Cả Ngày".equals(np.getLoainghiphep())) {
+				if ("Cả Ngày".equals(np.getLoainghiphep())) {
 					stmt.setFloat(4, 1f);
 				}
 				stmt.setString(5, np.getLydo());
@@ -156,6 +169,29 @@ public class NghiPhepDao extends connectDB {
 			}
 		}
 
+		return false;
+	}
+
+	public boolean checkConfirm(String type, int id) {
+		String sql = "update nghiphep set xacnhan = ? where id = ?";
+		conn = getConnectDB();
+
+		if (conn != null) {
+			try {
+				stmt = conn.prepareStatement(sql);
+
+				stmt.setString(1, type);
+				stmt.setInt(2, id);
+
+				stmt.executeUpdate();
+
+				return true;
+			} catch (Exception e) {
+				return false;
+			} finally {
+				closeConnection();
+			}
+		}
 		return false;
 	}
 }

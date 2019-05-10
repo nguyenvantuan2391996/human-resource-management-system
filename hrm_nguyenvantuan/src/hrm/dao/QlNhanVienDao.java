@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import hrm.entities.duan;
 import hrm.entities.nhanvien;
 import hrm.entities.tiengnhat;
 import hrm.entities.truongphong;
@@ -13,15 +14,20 @@ public class QlNhanVienDao extends connectDB {
 	private PreparedStatement stmt;
 	private ResultSet rs;
 
-	public ArrayList<nhanvien> getArrNV(int page, String search) {
+	public ArrayList<nhanvien> getArrNV(int page, String search, int id) {
 		ArrayList<nhanvien> arrnv = new ArrayList<>();
 
 		StringBuilder sql = new StringBuilder();
-		sql.append("select * from nhanvien, truongphong, phongban, luong, tiengnhat ");
+		sql.append("select * from nhanvien, truongphong, phongban, luong, tiengnhat, duan ");
 		sql.append("where nhanvien.matp = truongphong.matp ");
 		sql.append("and nhanvien.mapb = phongban.mapb ");
 		sql.append("and nhanvien.manv = luong.manv ");
 		sql.append("and luong.matn = tiengnhat.matn ");
+		sql.append("and nhanvien.maduan = duan.maduan ");
+
+		if (id != 0) {
+			sql.append("and nhanvien.matp = " + id + " ");
+		}
 
 		if (!"".equals(search)) {
 			sql.append("and hoten like ? ");
@@ -50,6 +56,9 @@ public class QlNhanVienDao extends connectDB {
 					nv.setMatp(Integer.valueOf(rs.getString("matp")));
 					nv.setMapb(Integer.valueOf(rs.getString("mapb")));
 					nv.setMatn(Integer.valueOf(rs.getString("matn")));
+					nv.setMaduan(Integer.valueOf(rs.getString("maduan")));
+					nv.setTenduan(rs.getString("tenduan"));
+					nv.setDanhgia(rs.getString("danhgia"));
 					nv.setHoten(rs.getString("nhanvien.hoten"));
 					nv.setTentp(rs.getString("truongphong.hoten"));
 					nv.setNamsinh(rs.getShort("namsinh"));
@@ -70,7 +79,7 @@ public class QlNhanVienDao extends connectDB {
 		}
 		return arrnv;
 	}
-	
+
 	public ArrayList<tiengnhat> getArrTN() {
 		ArrayList<tiengnhat> arrtn = new ArrayList<>();
 
@@ -100,12 +109,42 @@ public class QlNhanVienDao extends connectDB {
 		}
 		return arrtn;
 	}
+	
+	public ArrayList<duan> getArrDA() {
+		ArrayList<duan> arrduan = new ArrayList<>();
 
-	public int getTotalPage(String search) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("select * from duan");
+
+		conn = getConnectDB();
+
+		if (conn != null) {
+			try {
+				stmt = conn.prepareStatement(sql.toString());
+				rs = stmt.executeQuery();
+
+				while (rs.next()) {
+					duan da = new duan();
+					da.setMaduan(Integer.valueOf(rs.getString("maduan")));
+					da.setTenduan(rs.getString("tenduan"));
+
+					arrduan.add(da);
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+			} finally {
+				closeConnection();
+			}
+		}
+		return arrduan;
+	}
+
+	public int getTotalPage(String search, int id) {
 		int total = 0;
 		StringBuilder sql = new StringBuilder();
 
 		sql.append("select Count(manv) as total from nhanvien ");
+		sql.append("where matp = " + id + " ");
 
 		if (!"".equals(search)) {
 			sql.append("where hoten like ? ");
@@ -151,7 +190,7 @@ public class QlNhanVienDao extends connectDB {
 				stmt.setString(9, nv.getMatkhau());
 
 				stmt.executeUpdate();
-				
+
 				rs = stmt.getGeneratedKeys();
 				rs.next();
 				int manv = rs.getInt(1); // lấy manv tự tăng
@@ -194,22 +233,21 @@ public class QlNhanVienDao extends connectDB {
 				stmt.setString(6, nv.getGioitinh());
 				stmt.setString(7, nv.getSdt());
 				stmt.setInt(8, nv.getManv());
-				
+
 				stmt.executeUpdate();
 
 				stmt = conn.prepareStatement(sqlluong);
-				
+
 				stmt.setInt(1, nv.getMatn());
 				stmt.setInt(2, nv.getHesoluong());
 				stmt.setInt(3, nv.getManv());
 
 				stmt.executeUpdate();
-				
+
 				conn.commit();
 
 				return true;
 			} catch (Exception e) {
-				System.out.println(e);
 				rollback();
 				return false;
 			} finally {
@@ -276,4 +314,31 @@ public class QlNhanVienDao extends connectDB {
 
 		return false;
 	}
+	
+	public boolean tpEditNV(nhanvien nv) {
+		String sql = "update nhanvien set danhgia = ?, maduan = ? where manv = ?";
+		conn = getConnectDB();
+
+		if (conn != null) {
+			try {
+
+				stmt = conn.prepareStatement(sql);
+
+				stmt.setString(1, nv.getDanhgia());
+				stmt.setInt(2, nv.getMaduan());
+				stmt.setInt(3, nv.getManv());
+
+				stmt.executeUpdate();
+
+				return true;
+			} catch (Exception e) {
+				return false;
+			} finally {
+				closeConnection();
+			}
+		}
+
+		return false;
+	}
+	
 }

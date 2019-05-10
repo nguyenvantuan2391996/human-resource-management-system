@@ -11,14 +11,20 @@ public class BaoCaoDao extends connectDB {
 	private PreparedStatement stmt;
 	private ResultSet rs;
 
-	public ArrayList<baocao> getArrBC(int page, String search, int id) {
+	public ArrayList<baocao> getArrBC(int page, String search, int id, String type) {
 		ArrayList<baocao> arrbc = new ArrayList<>();
 
 		StringBuilder sql = new StringBuilder();
 		sql.append("select * from baocao, nhanvien, duan ");
 		sql.append("where baocao.manv = nhanvien.manv ");
 		sql.append("and nhanvien.maduan = duan.maduan ");
-		sql.append("and nhanvien.manv = ? ");
+
+		if ("nhanvien".equals(type)) {
+			sql.append("and nhanvien.manv = ? ");
+		}
+		if ("truongphong".equals(type)) {
+			sql.append("and matp = ? ");
+		}
 
 		if (!"".equals(search)) {
 			sql.append("and duan.tenduan like ? ");
@@ -62,12 +68,19 @@ public class BaoCaoDao extends connectDB {
 		return arrbc;
 	}
 
-	public int getTotalPage(String search, int id) {
+	public int getTotalPage(String search, int id, String type) {
 		int total = 0;
 		StringBuilder sql = new StringBuilder();
 
-		sql.append("select Count(id) as total from baocao ");
-		sql.append("where manv = ? ");
+		sql.append("select Count(id) as total from baocao, nhanvien ");
+		sql.append("where baocao.manv = nhanvien.manv ");
+		
+		if ("nhanvien".equals(type)) {
+			sql.append("and nhanvien.manv = ? ");
+		}
+		if ("truongphong".equals(type)) {
+			sql.append("and matp = ? ");
+		}
 
 		if (!"".equals(search)) {
 			sql.append("and hoten like ? ");

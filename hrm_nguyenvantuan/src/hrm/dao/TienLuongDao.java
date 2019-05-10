@@ -6,6 +6,9 @@ import java.util.ArrayList;
 
 import java.io.File;
 import javax.swing.JFileChooser;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 import hrm.entities.tienluong;
 import jxl.Workbook;
 import jxl.write.Label;
@@ -22,6 +25,9 @@ public class TienLuongDao extends connectDB {
 		StringBuilder sqlot = new StringBuilder();
 		sqlot.append("select nhanvien.manv, nhanvien.hoten, sum(sogioot) as sogioot ");
 		sqlot.append("from nhanvien left join ot on nhanvien.manv = ot.manv ");
+		if (id != 0) {
+			sqlot.append("where nhanvien.manv = ? ");
+		}
 		sqlot.append("group by nhanvien.manv ");
 
 		if (page != 0) {
@@ -33,7 +39,10 @@ public class TienLuongDao extends connectDB {
 			try {
 				stmt = conn.prepareStatement(sqlot.toString());
 
-				if (page != 0) {
+				if (page != 0 && id != 0) {
+					stmt.setInt(1, id);
+					stmt.setInt(2, (page - 1) * 5);
+				} else if (page != 0) {
 					stmt.setInt(1, (page - 1) * 5);
 				}
 				rs = stmt.executeQuery();
@@ -61,6 +70,9 @@ public class TienLuongDao extends connectDB {
 		StringBuilder sqlnp = new StringBuilder();
 		sqlnp.append("select nhanvien.manv, nhanvien.hoten, sum(sobuoi) as songaynghi ");
 		sqlnp.append("from nhanvien left join nghiphep on nhanvien.manv = nghiphep.manv ");
+		if (id != 0) {
+			sqlnp.append("where nhanvien.manv = ? ");
+		}
 		sqlnp.append("group by nhanvien.manv ");
 
 		if (page != 0) {
@@ -72,7 +84,10 @@ public class TienLuongDao extends connectDB {
 			try {
 				stmt = conn.prepareStatement(sqlnp.toString());
 
-				if (page != 0) {
+				if (page != 0 && id != 0) {
+					stmt.setInt(1, id);
+					stmt.setInt(2, (page - 1) * 5);
+				} else if (page != 0) {
 					stmt.setInt(1, (page - 1) * 5);
 				}
 				rs = stmt.executeQuery();
@@ -101,6 +116,9 @@ public class TienLuongDao extends connectDB {
 		StringBuilder sqlchamcong = new StringBuilder();
 		sqlchamcong.append("select nhanvien.manv, nhanvien.hoten, sum(socong) as sogiocong ");
 		sqlchamcong.append("from nhanvien left join chamcong on nhanvien.manv = chamcong.manv ");
+		if (id != 0) {
+			sqlchamcong.append("where nhanvien.manv = ? ");
+		}
 		sqlchamcong.append("group by nhanvien.manv ");
 
 		if (page != 0) {
@@ -112,7 +130,10 @@ public class TienLuongDao extends connectDB {
 			try {
 				stmt = conn.prepareStatement(sqlchamcong.toString());
 
-				if (page != 0) {
+				if (page != 0 && id != 0) {
+					stmt.setInt(1, id);
+					stmt.setInt(2, (page - 1) * 5);
+				} else if (page != 0) {
 					stmt.setInt(1, (page - 1) * 5);
 				}
 				rs = stmt.executeQuery();
@@ -141,6 +162,9 @@ public class TienLuongDao extends connectDB {
 		StringBuilder sqlluong = new StringBuilder();
 		sqlluong.append("select * from nhanvien, luong, tiengnhat ");
 		sqlluong.append("where nhanvien.manv = luong.manv and luong.matn = tiengnhat.matn ");
+		if (id != 0) {
+			sqlluong.append("and nhanvien.manv = ? ");
+		}
 		sqlluong.append("group by nhanvien.manv ");
 
 		if (!"".equals(search)) {
@@ -155,7 +179,10 @@ public class TienLuongDao extends connectDB {
 			try {
 				stmt = conn.prepareStatement(sqlluong.toString());
 
-				if (page != 0) {
+				if (page != 0 && id != 0) {
+					stmt.setInt(1, id);
+					stmt.setInt(2, (page - 1) * 5);
+				} else if (page != 0) {
 					stmt.setInt(1, (page - 1) * 5);
 				}
 				rs = stmt.executeQuery();
@@ -247,6 +274,15 @@ public class TienLuongDao extends connectDB {
 	}
 
 	public boolean checkExportFile() {
+		// look and feel background
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		ArrayList<tienluong> arrtl = getArrTL(0, "", 0);
 		ArrayList<Float> arrsogiocong = getArrSoGioCong(0, "", 0);
 		ArrayList<Float> arrsogioot = getArrSoGioOT(0, "", 0);
@@ -303,6 +339,52 @@ public class TienLuongDao extends connectDB {
 			} catch (Exception e) {
 				return false;
 				// TODO: handle exception
+			}
+		}
+		return false;
+	}
+	
+	public boolean checkConfirm(int id) {
+		String sqlchamcong = "delete from chamcong where manv = ?";
+		String sqlot = "delete from ot where manv = ?";
+		String sqlnp = "delete from nghiphep where manv = ?";
+		String sqlluong = "update luong set tongluong = ? where manv = ?";
+		conn = getConnectDB();
+
+		if (conn != null) {
+			try {
+				conn.setAutoCommit(false);
+				
+				stmt = conn.prepareStatement(sqlchamcong);
+				stmt.setInt(1, id);
+
+				stmt.executeUpdate();
+				
+				stmt = conn.prepareStatement(sqlot);
+				stmt.setInt(1, id);
+
+				stmt.executeUpdate();
+				
+				stmt = conn.prepareStatement(sqlnp);
+				stmt.setInt(1, id);
+
+				stmt.executeUpdate();
+				
+				stmt = conn.prepareStatement(sqlluong);
+				stmt.setFloat(1, 0);
+				stmt.setInt(2, id);
+
+				stmt.executeUpdate();
+				
+				conn.commit();
+
+				return true;
+			} catch (Exception e) {
+				System.out.println(e);
+				rollback();
+				return false;
+			} finally {
+				closeConnection();
 			}
 		}
 		return false;

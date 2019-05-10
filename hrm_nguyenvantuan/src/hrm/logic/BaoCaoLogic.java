@@ -9,15 +9,15 @@ import hrm.entities.truongphong;
 public class BaoCaoLogic {
 	BaoCaoDao bcDao = new BaoCaoDao();
 
-	public ArrayList<baocao> getArrBC(int page, String search, int id) {
+	public ArrayList<baocao> getArrBC(int page, String search, int id, String type) {
 		ArrayList<baocao> arrbc = new ArrayList<>();
-		arrbc = bcDao.getArrBC(page, search, id);
+		arrbc = bcDao.getArrBC(page, search, id, type);
 		return arrbc;
 	}
 
-	public ArrayList<Integer> getTotalPage(String search, int id) {
+	public ArrayList<Integer> getTotalPage(String search, int id, String type) {
 		ArrayList<Integer> list = new ArrayList<>();
-		int total = bcDao.getTotalPage(search, id);
+		int total = bcDao.getTotalPage(search, id, type);
 		for (int i = 1; i <= total; i++) {
 			list.add(i);
 		}
