@@ -72,7 +72,7 @@ https://www.uef.edu.vn/newsimg/tap-chi-uef/2014-11-12-19/11.pdf
 [7] Capture picture from webcam with Webcam.js
 https://makitweb.com/how-to-capture-picture-from-webcam-with-webcamjs/?fbclid=IwAR20SY3d3f25HrtaKZwt8h0HtsCcgH6ttJSLC0xPopK2JUqSFKqkuO12wI
 
-[8] Read Excel file in Java and jxl
+[8] Read Excel file in Java and jxl.
 https://nguyenvanquan7826.wordpress.com/2014/06/20/java-doc-ghi-file-exceltrong-java-voi-jxl-read-write-excel-file-in-java-with-jxl/
 
 [9] Code library Open source
