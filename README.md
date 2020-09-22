@@ -1,7 +1,7 @@
 # Document graduation
 
                                                 Human Resource Management System
- - IDE : visual studio 2019 , C#
+ - IDE : Eclipse , Java, JSP Servlet
  - Author : Tuan Nguyen Van - Student at Ha Noi University of Science and Technology
  
                                     **********************************************
